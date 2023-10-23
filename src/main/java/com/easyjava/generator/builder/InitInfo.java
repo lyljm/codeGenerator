@@ -15,29 +15,30 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-public class BuildTable {
-    public static final String SQL_SHOW_TABLES_STATUS = "show table status";
+public class InitInfo {
+    private static final String SQL_SHOW_TABLES_STATUS = "show table status";
 
-    public static final String SQL_SHOW_TABLE_FIELDS = "show full fields from %s";
+    private static final String SQL_SHOW_TABLE_FIELDS = "show full fields from %s";
 
-    public static final String SQL_SHOW_TABLE_INDEX = "show index from %s";
+    private static final String SQL_SHOW_TABLE_INDEX = "show index from %s";
 
     public static List<TableInfo> readTables() {
+        Connection connection = JDBCUtils.getConnection();
         List<TableInfo> tableInfoList = new ArrayList<>();
         JDBCUtils.executeQuery(SQL_SHOW_TABLES_STATUS, new IResultSetHandler() {
             @Override
             public void handle(ResultSet resultSet) throws SQLException {
-
                 while (resultSet.next()) {
                     TableInfo tableInfo = readTableInfo(resultSet);
                     tableInfoList.add(tableInfo);
                 }
             }
         });
+        JDBCUtils.closeConnection(connection);
         return tableInfoList;
     }
 
-    public static void readKeyIndexesInfo(TableInfo tableInfo) {
+    private static void readKeyIndexesInfo(TableInfo tableInfo) {
         // 键名到字段信息的映射
         Map<String, List<FieldInfo>> keyIndexMap = tableInfo.getKeyIndexMap();
         // 字段名到字段信息的映射
@@ -71,7 +72,7 @@ public class BuildTable {
      *
      * @param tableInfo
      */
-    public static void readFieldsInfo(TableInfo tableInfo) {
+    private static void readFieldsInfo(TableInfo tableInfo) {
         List<FieldInfo> fieldInfoList = new ArrayList<>();
         JDBCUtils.executeQuery(String.format(SQL_SHOW_TABLE_FIELDS, tableInfo.getTableName()), (resultSet) -> {
             while (resultSet.next()) {

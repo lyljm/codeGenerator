@@ -1,14 +1,15 @@
-package com.easyjava.generator.builder;
+package com.easyjava.generator.builder.impl;
 
 import com.easyjava.generator.Bean.Constants;
 import com.easyjava.generator.Bean.FieldInfo;
 import com.easyjava.generator.Bean.TableInfo;
+import com.easyjava.generator.builder.BuildFieldAnnotation;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 // 日期类型
-public class BuildBeanDateAnnotation implements BuildBeanAnnotation{
+public class BuildFieldDateAnnotation implements BuildFieldAnnotation {
 
     @Override
     public void createClassImport(BufferedWriter bw, TableInfo tableInfo) throws IOException {

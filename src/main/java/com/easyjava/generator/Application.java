@@ -1,8 +1,8 @@
 package com.easyjava.generator;
 
 import com.easyjava.generator.Bean.TableInfo;
-import com.easyjava.generator.builder.BuildPo;
-import com.easyjava.generator.builder.BuildTable;
+import com.easyjava.generator.builder.impl.BuildPo;
+import com.easyjava.generator.builder.InitInfo;
 import com.easyjava.generator.utils.JDBCUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -12,9 +12,7 @@ import java.util.List;
 @Slf4j
 public class Application {
     public static void main(String[] args) {
-        Connection connection = JDBCUtils.getConnection();
-        List<TableInfo> tableInfoList = BuildTable.readTables();
-        JDBCUtils.closeConnection(connection);
+        List<TableInfo> tableInfoList = InitInfo.readTables();
         BuildPo buildPo = new BuildPo();
         buildPo.execute(tableInfoList);
 
