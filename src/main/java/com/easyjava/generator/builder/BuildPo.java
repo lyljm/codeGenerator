@@ -5,12 +5,20 @@ import cn.hutool.core.util.ArrayUtil;
 import com.easyjava.generator.Bean.Constants;
 import com.easyjava.generator.Bean.FieldInfo;
 import com.easyjava.generator.Bean.TableInfo;
+import com.easyjava.generator.utils.StrUtils;
 
 import java.io.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class BuildPo extends BaseBuild {
+
+    List<BuildBeanAnnotation>buildBeanAnnotationList=new ArrayList<>();
+
+    public void registerAnnotation(BuildBeanAnnotation buildAnnotation){
+        buildBeanAnnotationList.add(buildAnnotation);
+    }
 
     public void execute(List<TableInfo> tableInfoList) {
         tableInfoList.forEach(tableInfo -> {
@@ -30,6 +38,14 @@ public class BuildPo extends BaseBuild {
         createClassComment(bw, tableInfo.getComment());
         bw.write("public class " + tableInfo.getBeanName() + " implements Serializable {");
         bw.newLine();
+        createBean(tableInfo, bw);
+        bw.newLine();
+        bw.newLine();
+        createSetAndGetMethod(tableInfo, bw);
+        bw.write("}");
+    }
+
+    private void createBean(TableInfo tableInfo, BufferedWriter bw) throws IOException {
         for (FieldInfo fieldInfo : tableInfo.getFieldList()) {
             bw.newLine();
             createFieldComment(bw, fieldInfo.getComment());
@@ -37,10 +53,32 @@ public class BuildPo extends BaseBuild {
             bw.write("\tprivate " + fieldInfo.getJavaType() + " " + fieldInfo.getPropertyName() + ";");
             bw.newLine();
         }
-        bw.write("}");
     }
 
-    private static void createIgnoreImport(TableInfo tableInfo, BufferedWriter bw) throws IOException {
+    private  void createSetAndGetMethod(TableInfo tableInfo, BufferedWriter bw) throws IOException {
+        for (FieldInfo fieldInfo : tableInfo.getFieldList()) {
+            String tempField = StrUtils.firstLetter2Upper(fieldInfo.getPropertyName());
+            String propertyName = fieldInfo.getPropertyName();
+            // set方法
+            bw.write("\tpublic void set" + tempField + "(" + fieldInfo.getJavaType() + " " + propertyName + ") {");
+            bw.newLine();
+            bw.write("\t\tthis." + propertyName + " = " + propertyName + ";");
+            bw.newLine();
+            bw.write("\t}");
+            bw.newLine();
+            bw.newLine();
+            // get方法
+            bw.write("\tpublic " + fieldInfo.getJavaType() + " get" + tempField + "() {");
+            bw.newLine();
+            bw.write("\t\treturn this." + fieldInfo.getPropertyName() + ";");
+            bw.newLine();
+            bw.write("\t}");
+            bw.newLine();
+            bw.newLine();
+        }
+    }
+
+    private  void createIgnoreImport(TableInfo tableInfo, BufferedWriter bw) throws IOException {
         String[] ignoreFields = Constants.IGNORE_BEAN_toJSON_FIELD.split(",");
         for (FieldInfo fieldInfo : tableInfo.getFieldList()) {
             if (ArrayUtil.contains(ignoreFields, fieldInfo.getPropertyName())) {
@@ -67,11 +105,11 @@ public class BuildPo extends BaseBuild {
         }
         if (tableInfo.getHaveDateTime()) {
             if (Constants.BEAN_DATE_SERIALIZE_OPEN) {
-                bw.write(Constants.BEAN_DATE_SERIALIZE_IMPORT);
+                bw.write(Constants.BEAN_DATETIME_SERIALIZE_EXPRESSION);
                 bw.newLine();
             }
             if (Constants.BEAN_DATE_DESERIALIZE_OPEN) {
-                bw.write(Constants.BEAN_DATE_DESERIALIZE_IMPORT);
+                bw.write(Constants.BEAN_DATETIME_DESERIALIZE_EXPRESSION);
                 bw.newLine();
             }
         }
@@ -100,6 +138,9 @@ public class BuildPo extends BaseBuild {
     }
 
     private void createFieldAnnotation(BufferedWriter bw, FieldInfo fieldInfo) throws IOException {
+       for(BuildBeanAnnotation buildBeanAnnotation:buildBeanAnnotationList){
+           buildBeanAnnotation.createFieldAnnotation(bw,fieldInfo);
+       }
         // 日期类型
         if ("Date".equals(fieldInfo.getJavaType())) {
             if (Constants.BEAN_DATE_SERIALIZE_OPEN) {
