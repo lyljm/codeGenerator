@@ -12,11 +12,14 @@ public class Constants {
     public static String PACKAGE_BASE;
     public static String PACKAGE_PO;
     public static String PACKAGE_QUERY;
+    public static String PACKAGE_MAPPER;
     // path
     public static String PATH_JAVA;
     public static String PATH_MAIN;
+    public static String PATH_RESOURCES;
     public static String PATH_PO;
     public static String PATH_QUERY;
+    public static String PATH_XML;
     // comment
     public static String COMMENT_AUTHOR;
     // toJson 忽略表字段
@@ -45,20 +48,23 @@ public class Constants {
         /**
          *  queryBean的后缀
          */
-        QUERY_BEAN_SUFFIX = PropertiesUtils.getString("suffix.bean.param");
+        QUERY_BEAN_SUFFIX = PropertiesUtils.getString("suffix.bean.query");
         /**
          * 包信息
          */
         PACKAGE_BASE = PropertiesUtils.getString("package.base");
-        PACKAGE_QUERY = PACKAGE_BASE + "." + PropertiesUtils.getString("package.param");
+        PACKAGE_QUERY = PACKAGE_BASE + "." + PropertiesUtils.getString("package.query");
         PACKAGE_PO = PACKAGE_BASE + "." + PropertiesUtils.getString("package.po");
+        PACKAGE_MAPPER=PACKAGE_BASE+"."+PropertiesUtils.getString("package.mapper");
         /**
          * 路径信息
          */
         PATH_MAIN = PropertiesUtils.getString("path.main");
         PATH_JAVA = PATH_MAIN + "/java";
+        PATH_RESOURCES = PATH_MAIN + "/resources";
         PATH_PO = PATH_JAVA + "/" + PACKAGE_PO.replace(".", "/");
         PATH_QUERY = PATH_JAVA + "/" + PACKAGE_QUERY.replace(".", "/");
+        PATH_XML = PATH_RESOURCES + "/" + PACKAGE_MAPPER.replace(".", "/");
         /**
          * comment
          */

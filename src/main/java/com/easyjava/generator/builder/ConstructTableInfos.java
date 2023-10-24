@@ -3,7 +3,7 @@ package com.easyjava.generator.builder;
 import com.easyjava.generator.Bean.Constants;
 import com.easyjava.generator.Bean.FieldInfo;
 import com.easyjava.generator.Bean.TableInfo;
-import com.easyjava.generator.sqlHandler.IResultSetHandler;
+import com.easyjava.generator.handler.IResultSetHandler;
 import com.easyjava.generator.utils.JDBCUtils;
 import com.easyjava.generator.utils.StrUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -14,8 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * 连接数据库，创建list<TableInfo>
+ *
+ */
 @Slf4j
-public class InitInfo {
+public class ConstructTableInfos {
     private static final String SQL_SHOW_TABLES_STATUS = "show table status";
 
     private static final String SQL_SHOW_TABLE_FIELDS = "show full fields from %s";

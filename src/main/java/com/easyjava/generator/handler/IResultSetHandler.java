@@ -1,4 +1,4 @@
-package com.easyjava.generator.sqlHandler;
+package com.easyjava.generator.handler;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

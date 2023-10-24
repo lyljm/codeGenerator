@@ -1,4 +1,4 @@
-package com.easyjava.generator.builder.impl;
+package com.easyjava.generator.builder.buildPo;
 
 import com.easyjava.generator.Bean.Constants;
 import com.easyjava.generator.Bean.FieldInfo;
@@ -12,9 +12,9 @@ import java.util.List;
 
 public class BuildPo extends BaseBuild {
 
-    private List<BuildFieldAnnotation> buildFieldAnnotationList = new ArrayList<>();
+    private List<IBuildFieldAnnotation> IBuildFieldAnnotationList = new ArrayList<>();
 
-    private List<BuildBeanAnnotation> buildBeanAnnotationList = new ArrayList<>();
+    private List<IBuildBeanAnnotation> IBuildBeanAnnotationList = new ArrayList<>();
 
     private IBuildFieldComment buildFieldComment;
 
@@ -22,6 +22,16 @@ public class BuildPo extends BaseBuild {
 
     private IBuildSetAndGetMethod buildSetAndGetMethod;
 
+    public BuildPo() {
+        super(Constants.PATH_PO, SUFFIX_JAVA);
+    }
+
+    /**
+     * 格式控制
+     * @param tableInfo
+     * @param bw
+     * @throws IOException
+     */
     @Override
     public void construct(TableInfo tableInfo, BufferedWriter bw) throws IOException {
         bw.write("package " + Constants.PACKAGE_PO + ";");
@@ -31,8 +41,8 @@ public class BuildPo extends BaseBuild {
         bw.newLine();
         bw.newLine();
         if (null != buildBeanComment) buildBeanComment.createBeanComment(bw, tableInfo);
-        for (BuildBeanAnnotation buildBeanAnnotation : buildBeanAnnotationList) {
-            buildBeanAnnotation.createClassAnnotation(bw, tableInfo);
+        for (IBuildBeanAnnotation IBuildBeanAnnotation : IBuildBeanAnnotationList) {
+            IBuildBeanAnnotation.createClassAnnotation(bw, tableInfo);
         }
         bw.write("public class " + tableInfo.getBeanName() + " implements Serializable {");
         bw.newLine();
@@ -43,16 +53,13 @@ public class BuildPo extends BaseBuild {
         bw.write("}");
     }
 
-    public BuildPo() {
-        super(Constants.PATH_PO, SUFFIX_JAVA);
+
+    public void registerFieldAnnotation(IBuildFieldAnnotation... IBuildFieldAnnotations) {
+        IBuildFieldAnnotationList.addAll(Arrays.asList(IBuildFieldAnnotations));
     }
 
-    public void registerFieldAnnotation(BuildFieldAnnotation... buildFieldAnnotations) {
-        buildFieldAnnotationList.addAll(Arrays.asList(buildFieldAnnotations));
-    }
-
-    public void registerBeanAnnotation(BuildBeanAnnotation... buildBeanAnnotations) {
-        buildBeanAnnotationList.addAll(Arrays.asList(buildBeanAnnotations));
+    public void registerBeanAnnotation(IBuildBeanAnnotation... IBuildBeanAnnotations) {
+        IBuildBeanAnnotationList.addAll(Arrays.asList(IBuildBeanAnnotations));
     }
 
     public void registerFiledComment(IBuildFieldComment buildFieldComment) {
@@ -68,7 +75,7 @@ public class BuildPo extends BaseBuild {
     }
 
     /**
-     * 创建Field、注释、申明
+     * 创建Field、注释、声明
      * @param tableInfo
      * @param bw
      * @throws IOException
@@ -79,8 +86,8 @@ public class BuildPo extends BaseBuild {
             // 创建字段注释
             if (null != buildFieldComment) buildFieldComment.createFieldComment(bw, fieldInfo);
             // 创建字段声明
-            for (BuildFieldAnnotation buildFieldAnnotation : buildFieldAnnotationList) {
-                buildFieldAnnotation.createFieldAnnotation(bw, fieldInfo);
+            for (IBuildFieldAnnotation IBuildFieldAnnotation : IBuildFieldAnnotationList) {
+                IBuildFieldAnnotation.createFieldAnnotation(bw, fieldInfo);
             }
             bw.write("\tprivate " + fieldInfo.getJavaType() + " " + fieldInfo.getPropertyName() + ";");
             bw.newLine();
@@ -110,12 +117,12 @@ public class BuildPo extends BaseBuild {
             bw.newLine();
         }
         // 导入类上面的声明
-        for (BuildBeanAnnotation buildBeanAnnotation : buildBeanAnnotationList) {
-            buildBeanAnnotation.createClassAnnotation(bw, tableInfo);
+        for (IBuildBeanAnnotation IBuildBeanAnnotation : IBuildBeanAnnotationList) {
+            IBuildBeanAnnotation.createClassAnnotation(bw, tableInfo);
         }
         // 导入字段上面的声明
-        for (BuildFieldAnnotation buildFieldAnnotation : buildFieldAnnotationList) {
-            buildFieldAnnotation.createClassImport(bw, tableInfo);
+        for (IBuildFieldAnnotation IBuildFieldAnnotation : IBuildFieldAnnotationList) {
+            IBuildFieldAnnotation.createClassImport(bw, tableInfo);
         }
     }
 

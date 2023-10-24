@@ -1,9 +1,9 @@
-package com.easyjava.generator.builder.impl;
+package com.easyjava.generator.builder.buildPo.impl;
 
 import cn.hutool.core.date.DateUtil;
 import com.easyjava.generator.Bean.Constants;
 import com.easyjava.generator.Bean.TableInfo;
-import com.easyjava.generator.builder.IBuildBeanComment;
+import com.easyjava.generator.builder.buildPo.IBuildBeanComment;
 
 import java.io.BufferedWriter;
 import java.io.IOException;

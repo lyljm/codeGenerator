@@ -1,4 +1,4 @@
-package com.easyjava.generator.builder;
+package com.easyjava.generator.builder.buildPo;
 
 import com.easyjava.generator.Bean.TableInfo;
 
@@ -7,7 +7,7 @@ import java.io.BufferedWriter;
 /**
  * 创建bean声明
  */
-public interface BuildBeanAnnotation {
+public interface IBuildBeanAnnotation {
     /**
      * 创建类声明
      * @param bw

@@ -1,8 +1,8 @@
-package com.easyjava.generator.builder.impl;
+package com.easyjava.generator.builder.buildPo.impl;
 
 import com.easyjava.generator.Bean.FieldInfo;
 import com.easyjava.generator.Bean.TableInfo;
-import com.easyjava.generator.builder.IBuildSetAndGetMethod;
+import com.easyjava.generator.builder.buildPo.IBuildSetAndGetMethod;
 import com.easyjava.generator.utils.StrUtils;
 
 import java.io.BufferedWriter;

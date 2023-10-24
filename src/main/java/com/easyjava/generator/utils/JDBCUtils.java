@@ -1,6 +1,6 @@
 package com.easyjava.generator.utils;
 
-import com.easyjava.generator.sqlHandler.IResultSetHandler;
+import com.easyjava.generator.handler.IResultSetHandler;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.*;
@@ -63,7 +63,6 @@ public abstract class JDBCUtils {
     public static void executeQuery(String sql, IResultSetHandler resultSetHandler) {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        // conn = JDBCUtils.getConnection();
         try {
             preparedStatement = conn.prepareStatement(sql);
             resultSet = preparedStatement.executeQuery();
@@ -72,7 +71,6 @@ public abstract class JDBCUtils {
             log.info("sql执行错误：{} \n{}", sql, e);
         } finally {
             JDBCUtils.closePsAndRs(preparedStatement, resultSet);
-            // JDBCUtils.closeConnection(conn);
         }
     }
 }
