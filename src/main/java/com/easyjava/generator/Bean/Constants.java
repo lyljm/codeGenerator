@@ -8,6 +8,8 @@ import java.util.Map;
 public class Constants {
     public static Boolean IGNORE_TABLE_PREFIX;
     public static String QUERY_BEAN_SUFFIX;
+
+    public static String MAPPER_SUFFIX;
     // package
     public static String PACKAGE_BASE;
     public static String PACKAGE_PO;
@@ -45,6 +47,10 @@ public class Constants {
          * 忽略表前缀
          */
         IGNORE_TABLE_PREFIX = Boolean.valueOf(PropertiesUtils.getString("ignore.table.prefix"));
+        /**
+         * mapper后缀
+         */
+        MAPPER_SUFFIX=PropertiesUtils.getString("suffix.mapper");
         /**
          *  queryBean的后缀
          */

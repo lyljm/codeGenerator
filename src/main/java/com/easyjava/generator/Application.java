@@ -4,6 +4,7 @@ import com.easyjava.generator.Bean.TableInfo;
 import com.easyjava.generator.builder.buildPo.BuildPo;
 import com.easyjava.generator.builder.ConstructTableInfos;
 import com.easyjava.generator.builder.buildPo.impl.*;
+import com.easyjava.generator.builder.buildXml.BuildXml;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -22,5 +23,7 @@ public class Application {
                 new BuildFieldIgnoreAnnotation()
         );
         buildPo.execute(tableInfoList);
+        BuildXml buildXml = new BuildXml();
+        buildXml.execute(tableInfoList);
     }
 }

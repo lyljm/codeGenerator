@@ -1,19 +1,18 @@
 package com.easyjava.generator.utils;
 
 
+import com.easyjava.generator.Bean.Constants;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.Assert;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-
+@Slf4j
 public class PropertiesTest {
-    Logger logger = LoggerFactory.getLogger(PropertiesTest.class);
 
     @Test
     public void testReadProperties() {
         String string = PropertiesUtils.getString("db.datasource.driver-class-name");
-        logger.info("driver-class-name: {}", string);
+        log.info("driver-class-name: {}", string);
     }
 
     @Test
@@ -24,6 +23,14 @@ public class PropertiesTest {
         Assert.assertTrue (!expression);
         boolean isOpen=PropertiesUtils.getBoolean("bean.date.deserialize.open");
         Assert.assertTrue(isOpen);
+    }
+
+    @Test
+    public void testResource(){
+        String pathResources = Constants.PATH_RESOURCES;
+        String pathXml = Constants.PATH_XML;
+        log.info(pathResources);
+        log.info(pathXml);
     }
 
 
